@@ -3,12 +3,17 @@
 -- Small HUD which shows current engine load in percent. The shown value is the average of the last 60 frames.
 --
 -- Author: StingerTopGun
+--
+-- Changelog:
+--      Clamp the output value to prevent negative load numbers
+--
+--
 
 LoadHUD = {}
 LoadHUD.eventName = {}
 LoadHUD.ModName = g_currentModName
 LoadHUD.ModDirectory = g_currentModDirectory
-LoadHUD.Version = "1.0.0.0"			
+LoadHUD.Version = "1.0.0.1"			
 
 LoadHUD.loopcnt = 0
 LoadHUD.average_cnt = 60
@@ -61,7 +66,8 @@ function LoadHUD.mean( t )
         end
     end
 
-    return (sum / count)
+    -- Edit by Gate
+    return MathUtil.clamp((sum / count), 0, 100)
 end
 
 addModEventListener(LoadHUD)
